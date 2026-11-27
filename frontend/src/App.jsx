@@ -1,29 +1,96 @@
-import { useEffect } from 'react'
-import Student from './assets/components/Student'
-import Register from './assets/hooks/Register'
-import User from './assets/hooks/User'
+import { useApp } from './AppContext'
 
 const App = () => {
-  useEffect(() => {
-    const previousTitle = document.title
-    document.title = 'React Demo | Frontend'
-
-    return () => {
-      document.title = previousTitle
-    }
-  }, [])
+  const {
+    count,
+    showCount,
+    form,
+    submittedName,
+    handleChange,
+    handleSubmit,
+    increaseCount,
+    resetCount,
+    toggleCount,
+  } = useApp()
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-6">
-      <div className="mx-auto max-w-3xl space-y-8">
-        <User />
-        <Register />
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="mb-3 text-xl font-semibold text-slate-900">Student</h2>
-          <Student name="Thamarai selvan" age="21" />
-        </section>
-      </div>
-    </main>
+    <div className="app">
+      <nav className="navbar" aria-label="Primary navigation">
+        <span className="nav-home">Home</span>
+        <span className="nav-app">App</span>
+      </nav>
+
+      <main>
+        <div className="register-title">Register form</div>
+
+        <form className="register-form" onSubmit={handleSubmit}>
+          <label htmlFor="name">Name:</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter your name"
+            value={form.name}
+            onChange={handleChange}
+          />
+
+          <label htmlFor="email">Email:</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            value={form.email}
+            onChange={handleChange}
+          />
+
+          <label htmlFor="password">Password:</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter password"
+            value={form.password}
+            onChange={handleChange}
+          />
+
+          <button className="button submit-button" type="submit">
+            Submit
+          </button>
+        </form>
+        {submittedName && <p className="submitted-message">Submitted: {submittedName}</p>}
+
+        {showCount && (
+          <div className="count-row">
+            <span>Count: {count}</span>
+            <div className="count-actions">
+              <button
+                className="button action-button"
+                type="button"
+                onClick={increaseCount}
+              >
+                Increase
+              </button>
+              <button
+                className="button reset-button"
+                type="button"
+                onClick={resetCount}
+              >
+                reset
+              </button>
+            </div>
+          </div>
+        )}
+
+        <button
+          className="button action-button toggle-button"
+          type="button"
+          onClick={toggleCount}
+        >
+          Toggle
+        </button>
+      </main>
+    </div>
   )
 }
 
